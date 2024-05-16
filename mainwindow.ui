@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1033</width>
-    <height>658</height>
+    <height>661</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -20,7 +20,7 @@
       <x>0</x>
       <y>0</y>
       <width>1031</width>
-      <height>501</height>
+      <height>531</height>
      </rect>
     </property>
     <property name="frameShape">
@@ -29,84 +29,11 @@
     <property name="frameShadow">
      <enum>QFrame::Raised</enum>
     </property>
-    <widget class="QGraphicsView" name="camera_1">
+    <widget class="QLabel" name="label_name_1">
      <property name="geometry">
       <rect>
-       <x>10</x>
-       <y>10</y>
-       <width>311</width>
-       <height>211</height>
-      </rect>
-     </property>
-    </widget>
-    <widget class="QGraphicsView" name="camera_2">
-     <property name="geometry">
-      <rect>
-       <x>350</x>
-       <y>10</y>
-       <width>311</width>
-       <height>211</height>
-      </rect>
-     </property>
-    </widget>
-    <widget class="QGraphicsView" name="camera_3">
-     <property name="geometry">
-      <rect>
-       <x>680</x>
-       <y>10</y>
-       <width>311</width>
-       <height>211</height>
-      </rect>
-     </property>
-    </widget>
-    <widget class="QGraphicsView" name="camera_4">
-     <property name="geometry">
-      <rect>
-       <x>10</x>
-       <y>260</y>
-       <width>311</width>
-       <height>211</height>
-      </rect>
-     </property>
-    </widget>
-    <widget class="QGraphicsView" name="camera_5">
-     <property name="geometry">
-      <rect>
-       <x>350</x>
-       <y>260</y>
-       <width>311</width>
-       <height>211</height>
-      </rect>
-     </property>
-    </widget>
-    <widget class="QGraphicsView" name="camera_6">
-     <property name="geometry">
-      <rect>
-       <x>680</x>
-       <y>260</y>
-       <width>311</width>
-       <height>211</height>
-      </rect>
-     </property>
-    </widget>
-    <widget class="QLabel" name="label_2">
-     <property name="geometry">
-      <rect>
-       <x>480</x>
-       <y>220</y>
-       <width>51</width>
-       <height>20</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>Area 2</string>
-     </property>
-    </widget>
-    <widget class="QLabel" name="label">
-     <property name="geometry">
-      <rect>
-       <x>140</x>
-       <y>220</y>
+       <x>150</x>
+       <y>230</y>
        <width>51</width>
        <height>20</height>
       </rect>
@@ -115,76 +42,268 @@
       <string>Area 1</string>
      </property>
     </widget>
-    <widget class="QLabel" name="label_3">
+    <widget class="QLabel" name="label_1">
      <property name="geometry">
       <rect>
-       <x>810</x>
-       <y>220</y>
+       <x>40</x>
+       <y>10</y>
+       <width>271</width>
+       <height>211</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QLabel { border: 1px solid grey; background-color: #f0f0f0; }</string>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="btn_Start_1">
+     <property name="geometry">
+      <rect>
+       <x>130</x>
+       <y>100</y>
+       <width>93</width>
+       <height>29</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Start</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_name_2">
+     <property name="geometry">
+      <rect>
+       <x>480</x>
+       <y>230</y>
        <width>51</width>
        <height>20</height>
       </rect>
      </property>
      <property name="text">
-      <string>Area 3</string>
+      <string>Area 1</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="btn_Start_2">
+     <property name="geometry">
+      <rect>
+       <x>450</x>
+       <y>100</y>
+       <width>93</width>
+       <height>29</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Start</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_2">
+     <property name="geometry">
+      <rect>
+       <x>360</x>
+       <y>10</y>
+       <width>271</width>
+       <height>211</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QLabel { border: 1px solid grey; background-color: #f0f0f0; }</string>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_name_3">
+     <property name="geometry">
+      <rect>
+       <x>800</x>
+       <y>230</y>
+       <width>51</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Area 1</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="btn_Start_3">
+     <property name="geometry">
+      <rect>
+       <x>770</x>
+       <y>100</y>
+       <width>93</width>
+       <height>29</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Start</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_3">
+     <property name="geometry">
+      <rect>
+       <x>680</x>
+       <y>10</y>
+       <width>271</width>
+       <height>211</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QLabel { border: 1px solid grey; background-color: #f0f0f0; }</string>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="btn_Start_4">
+     <property name="geometry">
+      <rect>
+       <x>450</x>
+       <y>360</y>
+       <width>93</width>
+       <height>29</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Start</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_name_4">
+     <property name="geometry">
+      <rect>
+       <x>150</x>
+       <y>490</y>
+       <width>51</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Area 1</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_name_5">
+     <property name="geometry">
+      <rect>
+       <x>480</x>
+       <y>490</y>
+       <width>51</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Area 1</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="btn_Start_5">
+     <property name="geometry">
+      <rect>
+       <x>770</x>
+       <y>360</y>
+       <width>93</width>
+       <height>29</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Start</string>
      </property>
     </widget>
     <widget class="QLabel" name="label_4">
      <property name="geometry">
       <rect>
-       <x>810</x>
-       <y>470</y>
+       <x>360</x>
+       <y>270</y>
+       <width>271</width>
+       <height>211</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QLabel { border: 1px solid grey; background-color: #f0f0f0; }</string>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_name_6">
+     <property name="geometry">
+      <rect>
+       <x>800</x>
+       <y>490</y>
        <width>51</width>
        <height>20</height>
       </rect>
      </property>
      <property name="text">
-      <string>Area 3</string>
+      <string>Area 1</string>
      </property>
     </widget>
     <widget class="QLabel" name="label_5">
      <property name="geometry">
       <rect>
-       <x>140</x>
-       <y>470</y>
-       <width>51</width>
-       <height>20</height>
+       <x>680</x>
+       <y>270</y>
+       <width>271</width>
+       <height>211</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QLabel { border: 1px solid grey; background-color: #f0f0f0; }</string>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="btn_Start_6">
+     <property name="geometry">
+      <rect>
+       <x>130</x>
+       <y>360</y>
+       <width>93</width>
+       <height>29</height>
       </rect>
      </property>
      <property name="text">
-      <string>Area 4</string>
+      <string>Start</string>
      </property>
     </widget>
     <widget class="QLabel" name="label_6">
      <property name="geometry">
       <rect>
-       <x>480</x>
-       <y>470</y>
-       <width>51</width>
-       <height>20</height>
+       <x>40</x>
+       <y>270</y>
+       <width>271</width>
+       <height>211</height>
       </rect>
      </property>
+     <property name="styleSheet">
+      <string notr="true">QLabel { border: 1px solid grey; background-color: #f0f0f0; }</string>
+     </property>
      <property name="text">
-      <string>Area 2</string>
+      <string/>
      </property>
     </widget>
-   </widget>
-   <widget class="QPushButton" name="btn_Start">
-    <property name="geometry">
-     <rect>
-      <x>270</x>
-      <y>530</y>
-      <width>93</width>
-      <height>29</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Start</string>
-    </property>
+    <zorder>label_5</zorder>
+    <zorder>label_4</zorder>
+    <zorder>label_6</zorder>
+    <zorder>label_2</zorder>
+    <zorder>label_3</zorder>
+    <zorder>label_name_1</zorder>
+    <zorder>label_1</zorder>
+    <zorder>btn_Start_1</zorder>
+    <zorder>label_name_2</zorder>
+    <zorder>btn_Start_2</zorder>
+    <zorder>label_name_3</zorder>
+    <zorder>btn_Start_3</zorder>
+    <zorder>btn_Start_4</zorder>
+    <zorder>label_name_4</zorder>
+    <zorder>label_name_5</zorder>
+    <zorder>btn_Start_5</zorder>
+    <zorder>label_name_6</zorder>
+    <zorder>btn_Start_6</zorder>
    </widget>
    <widget class="QPushButton" name="btn_Stop">
     <property name="geometry">
      <rect>
-      <x>400</x>
+      <x>460</x>
       <y>530</y>
       <width>93</width>
       <height>29</height>
@@ -201,7 +320,7 @@
      <x>0</x>
      <y>0</y>
      <width>1033</width>
-     <height>26</height>
+     <height>22</height>
     </rect>
    </property>
   </widget>
