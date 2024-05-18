@@ -29,7 +29,7 @@
     <property name="frameShadow">
      <enum>QFrame::Raised</enum>
     </property>
-    <widget class="QLabel" name="label_name_1">
+    <widget class="QLabel" name="camera_name_1">
      <property name="geometry">
       <rect>
        <x>150</x>
@@ -42,7 +42,7 @@
       <string>Area 1</string>
      </property>
     </widget>
-    <widget class="QLabel" name="label_1">
+    <widget class="QLabel" name="camera_1">
      <property name="geometry">
       <rect>
        <x>40</x>
@@ -71,7 +71,7 @@
       <string>Start</string>
      </property>
     </widget>
-    <widget class="QLabel" name="label_name_2">
+    <widget class="QLabel" name="camera_name_2">
      <property name="geometry">
       <rect>
        <x>480</x>
@@ -97,7 +97,7 @@
       <string>Start</string>
      </property>
     </widget>
-    <widget class="QLabel" name="label_2">
+    <widget class="QLabel" name="camera_2">
      <property name="geometry">
       <rect>
        <x>360</x>
@@ -113,7 +113,7 @@
       <string/>
      </property>
     </widget>
-    <widget class="QLabel" name="label_name_3">
+    <widget class="QLabel" name="camera_name_3">
      <property name="geometry">
       <rect>
        <x>800</x>
@@ -139,7 +139,7 @@
       <string>Start</string>
      </property>
     </widget>
-    <widget class="QLabel" name="label_3">
+    <widget class="QLabel" name="camera_3">
      <property name="geometry">
       <rect>
        <x>680</x>
@@ -168,7 +168,7 @@
       <string>Start</string>
      </property>
     </widget>
-    <widget class="QLabel" name="label_name_4">
+    <widget class="QLabel" name="camera_name_4">
      <property name="geometry">
       <rect>
        <x>150</x>
@@ -181,7 +181,7 @@
       <string>Area 1</string>
      </property>
     </widget>
-    <widget class="QLabel" name="label_name_5">
+    <widget class="QLabel" name="camera_name_5">
      <property name="geometry">
       <rect>
        <x>480</x>
@@ -207,7 +207,7 @@
       <string>Start</string>
      </property>
     </widget>
-    <widget class="QLabel" name="label_4">
+    <widget class="QLabel" name="camera_4">
      <property name="geometry">
       <rect>
        <x>360</x>
@@ -223,7 +223,7 @@
       <string/>
      </property>
     </widget>
-    <widget class="QLabel" name="label_name_6">
+    <widget class="QLabel" name="camera_name_6">
      <property name="geometry">
       <rect>
        <x>800</x>
@@ -236,7 +236,7 @@
       <string>Area 1</string>
      </property>
     </widget>
-    <widget class="QLabel" name="label_5">
+    <widget class="QLabel" name="camera_5">
      <property name="geometry">
       <rect>
        <x>680</x>
@@ -265,7 +265,7 @@
       <string>Start</string>
      </property>
     </widget>
-    <widget class="QLabel" name="label_6">
+    <widget class="QLabel" name="camera_6">
      <property name="geometry">
       <rect>
        <x>40</x>
@@ -281,23 +281,23 @@
       <string/>
      </property>
     </widget>
-    <zorder>label_5</zorder>
-    <zorder>label_4</zorder>
-    <zorder>label_6</zorder>
-    <zorder>label_2</zorder>
-    <zorder>label_3</zorder>
-    <zorder>label_name_1</zorder>
-    <zorder>label_1</zorder>
+    <zorder>camera_5</zorder>
+    <zorder>camera_4</zorder>
+    <zorder>camera_6</zorder>
+    <zorder>camera_2</zorder>
+    <zorder>camera_3</zorder>
+    <zorder>camera_name_1</zorder>
+    <zorder>camera_1</zorder>
     <zorder>btn_Start_1</zorder>
-    <zorder>label_name_2</zorder>
+    <zorder>camera_name_2</zorder>
     <zorder>btn_Start_2</zorder>
-    <zorder>label_name_3</zorder>
+    <zorder>camera_name_3</zorder>
     <zorder>btn_Start_3</zorder>
     <zorder>btn_Start_4</zorder>
-    <zorder>label_name_4</zorder>
-    <zorder>label_name_5</zorder>
+    <zorder>camera_name_4</zorder>
+    <zorder>camera_name_5</zorder>
     <zorder>btn_Start_5</zorder>
-    <zorder>label_name_6</zorder>
+    <zorder>camera_name_6</zorder>
     <zorder>btn_Start_6</zorder>
    </widget>
    <widget class="QPushButton" name="btn_Stop">
