@@ -1,11 +1,22 @@
 import sys
+
+import torch
 from PyQt5.QtGui import QImage, QPixmap
 from PyQt5.QtWidgets import QMainWindow, QApplication, QLabel
 from PyQt5 import uic
 from PyQt5.QtCore import QEvent, QThread, pyqtSignal, pyqtSlot
 import cv2
+from ultralytics import YOLO
 import numpy as np
-
+# get device for run program if gpu exist use gpu and else use cpu
+device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+# base on model trained
+model = YOLO('./best.pt').float().to(device)
+def getCameras():
+    with open('cameras.txt', 'r') as file:
+        cameras = [line.strip() for line in file]
+    return cameras
+cameras = getCameras()
 class ThreadClass(QThread):
     ImageUpdate = pyqtSignal(np.ndarray)
     def __init__(self, camera_index):
@@ -14,7 +25,7 @@ class ThreadClass(QThread):
         self.ThreadActive = False
 
     def run(self):
-        Capture = cv2.VideoCapture(0, cv2.CAP_DSHOW)
+        Capture = cv2.VideoCapture(cameras[self.camera_index])
         if not Capture.isOpened():
             print(f"Error: Camera index {self.camera_index} could not be opened.")
             return
@@ -25,7 +36,14 @@ class ThreadClass(QThread):
         while self.ThreadActive:
             ret, frame_cap = Capture.read()
             if ret:
-                self.ImageUpdate.emit(frame_cap)
+                results = model(frame_cap, conf=0.7, verbose=False)
+                # if detect falling
+                if len(results[0]) > 0:
+                    # get attributes of object
+                    cv2.putText(frame_cap, "Fall detect!!!!", (10, 50), cv2.FONT_HERSHEY_SIMPLEX, 2,
+                                (0, 0, 255), 2)
+                annotated_frame = results[0].plot()
+                self.ImageUpdate.emit(annotated_frame)
         Capture.release()
 
     def stop(self):
@@ -64,7 +82,7 @@ class UpdateForm(QMainWindow):
 
     def start_clicked(self, num):
         if self.workers[num] is None:
-            self.workers[num] = ThreadClass(camera_index=0)
+            self.workers[num] = ThreadClass(camera_index=num)
             self.workers[num].ImageUpdate.connect(lambda image, x=num: self.opencv_emit(image, x))
             self.workers[num].start()
 
