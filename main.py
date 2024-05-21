@@ -1,7 +1,7 @@
 import sys
-from PyQt5.QtWidgets import QMainWindow, QApplication, QLabel
+from PyQt5.QtWidgets import QMainWindow, QApplication, QLabel, QPushButton
 from PyQt5 import uic
-from PyQt5.QtCore import QEvent
+from PyQt5.QtCore import QEvent, QTimer
 
 class UpdateForm(QMainWindow):
     def __init__(self, parent=None):
@@ -14,64 +14,41 @@ class UpdateForm(QMainWindow):
         self.centralWidget().installEventFilter(self)  # Giả sử label nằm trong centralWidget
         # Thêm các phần tử giao diện và xử lý sự kiện ở đây (nếu cần)
         # Sự kiện click + ẩn button
-        self.btn_Start_1.clicked.connect(self.start_clicked)
-        self.btn_Start_1.hide()
-        self.label_1.installEventFilter(self)
-
-        self.btn_Start_2.clicked.connect(self.start_clicked)
-        self.btn_Start_2.hide()
-        self.label_2.installEventFilter(self)
-
-        self.btn_Start_3.clicked.connect(self.start_clicked)
-        self.btn_Start_3.hide()
-        self.label_3.installEventFilter(self)
-
-        self.btn_Start_4.clicked.connect(self.start_clicked)
-        self.btn_Start_4.hide()
-        self.label_4.installEventFilter(self)
-
-        self.btn_Start_5.clicked.connect(self.start_clicked)
-        self.btn_Start_5.hide()
-        self.label_5.installEventFilter(self)
-
-        self.btn_Start_6.clicked.connect(self.start_clicked)
-        self.btn_Start_6.hide()
-        self.label_6.installEventFilter(self)
+        self.initUI()
 
         self.show()
 
+    def initUI(self):
+        self.buttons = []
+        self.labels = []
+        for i in range(1, 7):
+            button = getattr(self, f'btn_Start_{i}')
+            button.clicked.connect(self.start_clicked)
+            button.hide()
+            self.buttons.append(button)
+            
+            label = getattr(self, f'label_{i}')
+            label.installEventFilter(self)
+            self.labels.append(label)
+
+        self.timers = [QTimer(self) for _ in range(6)]
+        for timer in self.timers:
+            timer.setSingleShot(True)
+            timer.timeout.connect(self.hide_buttons)
+
     def eventFilter(self, obj, event):
-        if obj is self.label_1:
-            if event.type() == QEvent.Enter:
-                self.btn_Start_1.show()  # Show the button when mouse enters the widget
-            elif event.type() == QEvent.Leave:
-                self.btn_Start_1.hide()  # Hide the button when mouse leaves the widget
-        elif obj is self.label_2:
-            if event.type() == QEvent.Enter:
-                self.btn_Start_2.show()  # Show the button when mouse enters the widget
-            elif event.type() == QEvent.Leave:
-                self.btn_Start_2.hide()  # Hide the button when mouse leaves the widget
-        elif obj is self.label_3:
-            if event.type() == QEvent.Enter:
-                self.btn_Start_3.show()  # Show the button when mouse enters the widget
-            elif event.type() == QEvent.Leave:
-                self.btn_Start_3.hide()  # Hide the button when mouse leaves the widget
-        elif obj is self.label_4:
-            if event.type() == QEvent.Enter:
-                self.btn_Start_4.show()  # Show the button when mouse enters the widget
-            elif event.type() == QEvent.Leave:
-                self.btn_Start_4.hide()  # Hide the button when mouse leaves the widget
-        elif obj is self.label_5:
-            if event.type() == QEvent.Enter:
-                self.btn_Start_5.show()  # Show the button when mouse enters the widget
-            elif event.type() == QEvent.Leave:
-                self.btn_Start_5.hide()  # Hide the button when mouse leaves the widget
-        elif obj is self.label_6:
-            if event.type() == QEvent.Enter:
-                self.btn_Start_6.show()  # Show the button when mouse enters the widget
-            elif event.type() == QEvent.Leave:
-                self.btn_Start_6.hide()  # Hide the button when mouse leaves the widget
+        for i, label in enumerate(self.labels):
+            if obj is label:
+                if event.type() == QEvent.Enter:
+                    self.buttons[i].show()  
+                    self.timers[i].stop() 
+                elif event.type() == QEvent.Leave:
+                    self.timers[i].start(20) # delay trước khi ẩn nút
         return super().eventFilter(obj, event)
+
+    def hide_buttons(self):
+        for button in self.buttons:
+            button.hide()
 
     def start_clicked(self):
         print("Start button clicked!")
