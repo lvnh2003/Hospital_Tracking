@@ -63,8 +63,8 @@
       <rect>
        <x>130</x>
        <y>100</y>
-       <width>93</width>
-       <height>29</height>
+       <width>91</width>
+       <height>41</height>
       </rect>
      </property>
      <property name="text">
@@ -82,19 +82,6 @@
      </property>
      <property name="text">
       <string>Area 1</string>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="btn_Start_2">
-     <property name="geometry">
-      <rect>
-       <x>450</x>
-       <y>100</y>
-       <width>93</width>
-       <height>29</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>Start</string>
      </property>
     </widget>
     <widget class="QLabel" name="camera_2">
@@ -126,19 +113,6 @@
       <string>Area 1</string>
      </property>
     </widget>
-    <widget class="QPushButton" name="btn_Start_3">
-     <property name="geometry">
-      <rect>
-       <x>770</x>
-       <y>100</y>
-       <width>93</width>
-       <height>29</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>Start</string>
-     </property>
-    </widget>
     <widget class="QLabel" name="camera_3">
      <property name="geometry">
       <rect>
@@ -153,19 +127,6 @@
      </property>
      <property name="text">
       <string/>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="btn_Start_4">
-     <property name="geometry">
-      <rect>
-       <x>450</x>
-       <y>360</y>
-       <width>93</width>
-       <height>29</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>Start</string>
      </property>
     </widget>
     <widget class="QLabel" name="camera_name_4">
@@ -194,20 +155,7 @@
       <string>Area 1</string>
      </property>
     </widget>
-    <widget class="QPushButton" name="btn_Start_5">
-     <property name="geometry">
-      <rect>
-       <x>770</x>
-       <y>360</y>
-       <width>93</width>
-       <height>29</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>Start</string>
-     </property>
-    </widget>
-    <widget class="QLabel" name="camera_4">
+    <widget class="QLabel" name="camera_5">
      <property name="geometry">
       <rect>
        <x>360</x>
@@ -236,7 +184,7 @@
       <string>Area 1</string>
      </property>
     </widget>
-    <widget class="QLabel" name="camera_5">
+    <widget class="QLabel" name="camera_6">
      <property name="geometry">
       <rect>
        <x>680</x>
@@ -252,20 +200,7 @@
       <string/>
      </property>
     </widget>
-    <widget class="QPushButton" name="btn_Start_6">
-     <property name="geometry">
-      <rect>
-       <x>130</x>
-       <y>360</y>
-       <width>93</width>
-       <height>29</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>Start</string>
-     </property>
-    </widget>
-    <widget class="QLabel" name="camera_6">
+    <widget class="QLabel" name="camera_4">
      <property name="geometry">
       <rect>
        <x>40</x>
@@ -281,37 +216,89 @@
       <string/>
      </property>
     </widget>
+    <widget class="QPushButton" name="btn_Start_2">
+     <property name="geometry">
+      <rect>
+       <x>450</x>
+       <y>90</y>
+       <width>91</width>
+       <height>41</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Start</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="btn_Start_3">
+     <property name="geometry">
+      <rect>
+       <x>780</x>
+       <y>90</y>
+       <width>91</width>
+       <height>41</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Start</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="btn_Start_4">
+     <property name="geometry">
+      <rect>
+       <x>130</x>
+       <y>350</y>
+       <width>91</width>
+       <height>41</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Start</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="btn_Start_5">
+     <property name="geometry">
+      <rect>
+       <x>450</x>
+       <y>350</y>
+       <width>91</width>
+       <height>41</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Start</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="btn_Start_6">
+     <property name="geometry">
+      <rect>
+       <x>780</x>
+       <y>350</y>
+       <width>91</width>
+       <height>41</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Start</string>
+     </property>
+    </widget>
+    <zorder>camera_6</zorder>
     <zorder>camera_5</zorder>
     <zorder>camera_4</zorder>
-    <zorder>camera_6</zorder>
     <zorder>camera_2</zorder>
     <zorder>camera_3</zorder>
     <zorder>camera_name_1</zorder>
     <zorder>camera_1</zorder>
     <zorder>btn_Start_1</zorder>
     <zorder>camera_name_2</zorder>
-    <zorder>btn_Start_2</zorder>
     <zorder>camera_name_3</zorder>
-    <zorder>btn_Start_3</zorder>
-    <zorder>btn_Start_4</zorder>
     <zorder>camera_name_4</zorder>
     <zorder>camera_name_5</zorder>
-    <zorder>btn_Start_5</zorder>
     <zorder>camera_name_6</zorder>
+    <zorder>btn_Start_2</zorder>
+    <zorder>btn_Start_3</zorder>
+    <zorder>btn_Start_4</zorder>
+    <zorder>btn_Start_5</zorder>
     <zorder>btn_Start_6</zorder>
-   </widget>
-   <widget class="QPushButton" name="btn_Stop">
-    <property name="geometry">
-     <rect>
-      <x>460</x>
-      <y>530</y>
-      <width>93</width>
-      <height>29</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Stop</string>
-    </property>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">

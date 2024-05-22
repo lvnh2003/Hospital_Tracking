@@ -1,31 +1,28 @@
 import sys
-
-import torch
 from PyQt5.QtGui import QImage, QPixmap
 from PyQt5.QtWidgets import QMainWindow, QApplication, QLabel
 from PyQt5 import uic
-from PyQt5.QtCore import QEvent, QThread, pyqtSignal, pyqtSlot
+from PyQt5.QtCore import QEvent, QThread, pyqtSignal, pyqtSlot,QTimer
 import cv2
-from ultralytics import YOLO
 import numpy as np
-# get device for run program if gpu exist use gpu and else use cpu
-device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
-# base on model trained
-model = YOLO('./best.pt').float().to(device)
-def getCameras():
-    with open('cameras.txt', 'r') as file:
-        cameras = [line.strip() for line in file]
-    return cameras
-cameras = getCameras()
+from detect_utils import FallDetect
+from func import Function_TXT
+# Lấy link tất cả camera trong cameras.txt
+func_txt = Function_TXT();
+# cameras = func_txt.getCameras()
+fall_detect = FallDetect(conf=0.7)
+# class thread để gửi frame cho label
 class ThreadClass(QThread):
     ImageUpdate = pyqtSignal(np.ndarray)
     def __init__(self, camera_index):
         super().__init__()
         self.camera_index = camera_index
         self.ThreadActive = False
+        self.fall_detect = fall_detect
+        self.cameras = func_txt.getCameras()
 
     def run(self):
-        Capture = cv2.VideoCapture(cameras[self.camera_index])
+        Capture = cv2.VideoCapture(self.cameras[self.camera_index])
         if not Capture.isOpened():
             print(f"Error: Camera index {self.camera_index} could not be opened.")
             return
@@ -36,13 +33,11 @@ class ThreadClass(QThread):
         while self.ThreadActive:
             ret, frame_cap = Capture.read()
             if ret:
-                results = model(frame_cap, conf=0.7, verbose=False)
-                # if detect falling
-                if len(results[0]) > 0:
-                    # get attributes of object
-                    cv2.putText(frame_cap, "Fall detect!!!!", (10, 50), cv2.FONT_HERSHEY_SIMPLEX, 2,
-                                (0, 0, 255), 2)
-                annotated_frame = results[0].plot()
+                results = self.fall_detect.detect(frame_cap)
+                # phát hiện có người ngã
+                if results:
+                    cv2.putText(frame_cap, "Fall detect!!!!", (10, 50), cv2.FONT_HERSHEY_SIMPLEX, 2, (0, 0, 255), 2)
+                annotated_frame = results.plot() if results else frame_cap
                 self.ImageUpdate.emit(annotated_frame)
         Capture.release()
 
@@ -58,34 +53,51 @@ class UpdateForm(QMainWindow):
         self.setWindowTitle("Hospital Home")
         self.labels = [self.camera_1, self.camera_2, self.camera_3, self.camera_4, self.camera_5, self.camera_6]
         self.start_buttons = [self.btn_Start_1, self.btn_Start_2, self.btn_Start_3, self.btn_Start_4, self.btn_Start_5, self.btn_Start_6]
+        self.cameras = func_txt.getCameras()
+        # Sự kiện click + ẩn button
+        self.initUI()
+        self.show()
+    # init ui các camera và sự kiện camera
+    def initUI(self):
         self.centralWidget().installEventFilter(self)
-        self.workers = [None] * len(self.labels)
+        self.ThreadActiveCamera = [None] * len(self.labels)
 
         for i, btn in enumerate(self.start_buttons):
-            btn.clicked.connect(lambda _, x=i: self.start_clicked(x))
+            btn.clicked.connect(lambda _, x=i: self.start_camera(x))
             btn.hide()
 
         for label in self.labels:
             label.installEventFilter(self)
-
-        self.show()
+        self.centralWidget().installEventFilter(self)  # Giả sử label nằm trong centralWidget
+        self.timers = [QTimer(self) for _ in range(6)]
+        for timer in self.timers:
+            timer.setSingleShot(True)
+            timer.timeout.connect(self.hide_buttons)
 
     def eventFilter(self, obj, event):
         if event.type() in [QEvent.Enter, QEvent.Leave]:
             for i, label in enumerate(self.labels):
                 if obj is label:
                     if event.type() == QEvent.Enter:
+                        # kiểm tra số camera đó được thêm chưa
+                        if (i+1) > len(self.cameras):
+                            self.start_buttons[i].setText("New Camera")
                         self.start_buttons[i].show()
+                        self.timers[i].stop()
                     elif event.type() == QEvent.Leave:
-                        self.start_buttons[i].hide()
+                        self.timers[i].start(20) # delay trước khi ẩn nút
         return super().eventFilter(obj, event)
 
-    def start_clicked(self, num):
-        if self.workers[num] is None:
-            self.workers[num] = ThreadClass(camera_index=num)
-            self.workers[num].ImageUpdate.connect(lambda image, x=num: self.opencv_emit(image, x))
-            self.workers[num].start()
-
+    def start_camera(self, num):
+        if(num+1) > len(self.cameras):
+            # mở thêm camera
+            return
+        if self.ThreadActiveCamera[num] is None:
+            self.start_buttons[num].setText("Stop")
+            self.ThreadActiveCamera[num] = ThreadClass(camera_index=num)
+            self.ThreadActiveCamera[num].ImageUpdate.connect(lambda image, x=num: self.opencv_emit(image, x))
+            self.ThreadActiveCamera[num].start()
+    #  gửi tin dạng Image đến cho Qlabel
     @pyqtSlot(np.ndarray, int)
     def opencv_emit(self, Image, camera_index):
         original = self.cvt_cv_qt(Image)
@@ -100,10 +112,13 @@ class UpdateForm(QMainWindow):
         pixmap = QPixmap.fromImage(cvt2QtFormat)
         return pixmap
 
+    def hide_buttons(self):
+        for button in self.start_buttons:
+            button.hide()
     def closeEvent(self, event):
-        for worker in self.workers:
-            if worker is not None:
-                worker.stop()
+        for threadCamera in self.ThreadActiveCamera:
+            if threadCamera is not None:
+                threadCamera.stop()
         event.accept()
 
 if __name__ == "__main__":
