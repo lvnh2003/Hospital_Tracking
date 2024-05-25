@@ -7,6 +7,7 @@ import cv2
 import numpy as np
 from detect_utils import FallDetect
 from func import Function_TXT
+from AddCamera import MenuWindow
 # Lấy link tất cả camera trong cameras.txt
 func_txt = Function_TXT();
 # cameras = func_txt.getCameras()
@@ -91,6 +92,8 @@ class UpdateForm(QMainWindow):
     def start_camera(self, num):
         if(num+1) > len(self.cameras):
             # mở thêm camera
+            self.menuWindow = MenuWindow(self)
+            self.menuWindow.show()
             return
         if self.ThreadActiveCamera[num] is None:
             self.start_buttons[num].setText("Stop")
