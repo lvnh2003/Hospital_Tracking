@@ -1,52 +1,16 @@
 import sys
 from PyQt5.QtGui import QImage, QPixmap
-from PyQt5.QtWidgets import QMainWindow, QApplication, QLabel
+from PyQt5.QtWidgets import QMainWindow, QApplication
 from PyQt5 import uic
-from PyQt5.QtCore import QEvent, QThread, pyqtSignal, pyqtSlot,QTimer
+from PyQt5.QtCore import QEvent, pyqtSlot,QTimer
 import cv2
 import numpy as np
-from detect_utils import FallDetect
-from func import Function_TXT
+from ThreadClass import ThreadClassDetect
 from AddCamera import MenuWindow
-# Lấy link tất cả camera trong cameras.txt
-func_txt = Function_TXT();
-# cameras = func_txt.getCameras()
-fall_detect = FallDetect(conf=0.7)
-# class thread để gửi frame cho label
-class ThreadClass(QThread):
-    ImageUpdate = pyqtSignal(np.ndarray)
-    def __init__(self, camera_index):
-        super().__init__()
-        self.camera_index = camera_index
-        self.ThreadActive = False
-        self.fall_detect = fall_detect
-        self.cameras = func_txt.getCameras()
+from func import Function_TXT
 
-    def run(self):
-        Capture = cv2.VideoCapture(self.cameras[self.camera_index])
-        if not Capture.isOpened():
-            print(f"Error: Camera index {self.camera_index} could not be opened.")
-            return
-
-        Capture.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
-        Capture.set(cv2.CAP_PROP_FRAME_WIDTH, 640)
-        self.ThreadActive = True
-        while self.ThreadActive:
-            ret, frame_cap = Capture.read()
-            if ret:
-                results = self.fall_detect.detect(frame_cap)
-                # phát hiện có người ngã
-                if results:
-                    cv2.putText(frame_cap, "Fall detect!!!!", (10, 50), cv2.FONT_HERSHEY_SIMPLEX, 2, (0, 0, 255), 2)
-                annotated_frame = results.plot() if results else frame_cap
-                self.ImageUpdate.emit(annotated_frame)
-        Capture.release()
-
-    def stop(self):
-        self.ThreadActive = False
-        self.quit()
-
-class UpdateForm(QMainWindow):
+func_txt = Function_TXT()
+class HomeWindow(QMainWindow):
     def __init__(self, parent=None):
         super().__init__(parent)
         self.train_id = None
@@ -97,9 +61,14 @@ class UpdateForm(QMainWindow):
             return
         if self.ThreadActiveCamera[num] is None:
             self.start_buttons[num].setText("Stop")
-            self.ThreadActiveCamera[num] = ThreadClass(camera_index=num)
+            self.ThreadActiveCamera[num] = ThreadClassDetect(camera_index=num)
             self.ThreadActiveCamera[num].ImageUpdate.connect(lambda image, x=num: self.opencv_emit(image, x))
             self.ThreadActiveCamera[num].start()
+        # sự kiện stop camera
+        else:
+            self.ThreadActiveCamera[num].stop()
+            self.ThreadActiveCamera[num] = None
+            self.start_buttons[num].setText("Start")
     #  gửi tin dạng Image đến cho Qlabel
     @pyqtSlot(np.ndarray, int)
     def opencv_emit(self, Image, camera_index):
@@ -126,5 +95,5 @@ class UpdateForm(QMainWindow):
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
-    update_form = UpdateForm()
+    update_form = HomeWindow()
     sys.exit(app.exec_())
