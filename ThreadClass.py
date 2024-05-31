@@ -2,8 +2,8 @@ import cv2
 from PyQt5.QtCore import QThread, pyqtSignal
 import numpy as np
 
-from detect_utils import FallDetect
-from func import Function_TXT
+from DetectFallingModel import FallDetect
+from FunctionQueryTXTFile import Function_TXT
 
 fall_detect = FallDetect(conf=0.7)
 func_txt = Function_TXT()
@@ -66,4 +66,4 @@ class ThreadClass(QThread):
 
     def stop(self):
         self.ThreadActive = False
-        self.terminate()
+        self.quit()

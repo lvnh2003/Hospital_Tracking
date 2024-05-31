@@ -6,8 +6,8 @@ from PyQt5.QtCore import QEvent, pyqtSlot,QTimer
 import cv2
 import numpy as np
 from ThreadClass import ThreadClassDetect
-from AddCamera import MenuWindow
-from func import Function_TXT
+from MenuWindow import MenuWindow
+from FunctionQueryTXTFile import Function_TXT
 
 func_txt = Function_TXT()
 class HomeWindow(QMainWindow):

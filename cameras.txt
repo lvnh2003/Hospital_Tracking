@@ -1,5 +1,4 @@
 5.mp4
 7.mp4
-5.mp4
-7.mp4
-5.mp4
+http://65.34.28.98:50001/cgi-bin/camera?resolution=640&amp;quality=1&amp;Language=0&amp;1717178066
+http://97.68.104.34:80/mjpg/video.mjpg
