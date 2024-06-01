@@ -41,6 +41,7 @@ class CameraLabel(QLabel):
 class MenuWindow(QMainWindow):
     def __init__(self, parent=None):
         super().__init__(parent)
+        self.parent = parent
         self.camera_labels = None
         uic.loadUi("menuwindow.ui", self)
         self.cameras = func_txt.getCameras()
@@ -51,7 +52,11 @@ class MenuWindow(QMainWindow):
         self.initUI()
 
     def initUI(self):
-        self.camera_labels = []
+        if self.camera_labels is None:
+            self.camera_labels = []
+        else:
+            self.clear_layout(self.verticalLayout)
+            self.camera_labels = []
         for i in range(len(self.cameras)):
             label = CameraLabel(self)
             label.setText(f"Camera {i + 1}")
@@ -64,6 +69,14 @@ class MenuWindow(QMainWindow):
         self.camera_1.setStyleSheet("background-color: white;color: black;padding-left:20; border-radius: 8")
         self.editBtn.clicked.connect(self.editCamera)
 
+    def clear_layout(self, layout):
+        while layout.count():
+            item = layout.takeAt(0)
+            widget = item.widget()
+            if widget is not None:
+                widget.deleteLater()
+            else:
+                self.clear_layout(item.layout())
     @pyqtSlot(np.ndarray)
     def opencv_emit(self, Image):
         original = self.cvt_cv_qt(Image)
@@ -78,17 +91,13 @@ class MenuWindow(QMainWindow):
         pixmap = QPixmap.fromImage(cvt2QtFormat)
         return pixmap
 
-    def resetLabelStyles(self):
-        for i in range(len(self.cameras)):
-            label_name = f"camera_{i + 1}"
-            label = getattr(self, label_name)
-            label.setStyleSheet(
-                "padding-left:20;border: None; background-color: transparent; color: white; border-radius: 8")
     def editCamera(self):
-        self.edit_camera = EditCamera(self)
+        EditCamera(self)
         self.ThreadActiveCamera.stop()
-        self.edit_camera.show()
-
+    def updateCameraList(self):
+        self.cameras = func_txt.getCameras()
+        self.initUI()
+        self.parent.updateCameraList()
     def closeEvent(self, event):
          if self.ThreadActiveCamera  is not None:
              self.ThreadActiveCamera.stop()

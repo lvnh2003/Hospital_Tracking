@@ -27,7 +27,7 @@ class EditCamera(QtWidgets.QMainWindow):
         self.ThreadActiveCamera = ThreadClass(camera=self.parent.cameras[self.parent.camera_active])
         self.ThreadActiveCamera.ImageUpdate.connect(self.opencv_emit)
         self.ThreadActiveCamera.start()
-
+        self.show()
     # Kiểm tra IP của camera có chuẩn ( tòn tại hay không )
     def checkCameraIsAvailable(self):
         self.link = self.ipAddress.toPlainText()
@@ -65,7 +65,7 @@ class EditCamera(QtWidgets.QMainWindow):
         # self.parent.__init__()
         index = self.parent.camera_active
         self.func_txt.replaceCamera(index, self.link)
-        # self.parent().updateCameraList()
+        self.parent.updateCameraList()
         self.ThreadActiveCamera.stop()
         self.close()
         print("Update success")

@@ -87,6 +87,9 @@ class HomeWindow(QMainWindow):
     def hide_buttons(self):
         for button in self.start_buttons:
             button.hide()
+    def updateCameraList(self):
+        self.cameras = func_txt.getCameras()
+        self.initUI()
     def closeEvent(self, event):
         for threadCamera in self.ThreadActiveCamera:
             if threadCamera is not None:
