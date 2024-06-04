@@ -5,6 +5,8 @@ from PyQt5 import uic
 from PyQt5.QtCore import QEvent, QThread, pyqtSignal, pyqtSlot, QTimer, Qt
 import cv2
 import numpy as np
+
+from AddCamera import AddCamera
 from EditCamera import EditCamera
 from ThreadClass import ThreadClass
 from FunctionQueryTXTFile import Function_TXT
@@ -50,6 +52,7 @@ class MenuWindow(QMainWindow):
         self.ThreadActiveCamera.ImageUpdate.connect(self.opencv_emit)
         self.ThreadActiveCamera.start()
         self.initUI()
+        self.show()
 
     def initUI(self):
         if self.camera_labels is None:
@@ -68,6 +71,7 @@ class MenuWindow(QMainWindow):
             self.verticalLayout.addWidget(label)
         self.camera_1.setStyleSheet("background-color: white;color: black;padding-left:20; border-radius: 8")
         self.editBtn.clicked.connect(self.editCamera)
+        self.addBtn.clicked.connect(lambda : AddCamera(self))
 
     def clear_layout(self, layout):
         while layout.count():
