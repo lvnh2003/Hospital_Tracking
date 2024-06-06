@@ -110,7 +110,6 @@ class HomeWindow(QMainWindow):
         self.all_cameras_label.setText(str(len(self.cameras)))
         self.camera_stop_label.setText(str(len(self.cameras)))
         self.ThreadActiveCamera.append(None)
-        print(len(self.cameras))
         self.start_buttons[len(self.cameras)-1].setText("Start")
 
     def clock(self):

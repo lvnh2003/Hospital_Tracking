@@ -20,3 +20,14 @@ class Function_TXT:
         with open('cameras.txt', 'a') as file:
             file.write(link + "\n")
 
+    def deleteCamera(self, index):
+        cameras = self.getCameras()
+        if 0 <= index < len(cameras):
+            cameras.pop(index)
+            with open(self.camera_file, 'w') as file:
+                for camera in cameras:
+                    file.write(camera + "\n")
+        else:
+            print("Error: Index out of range")
+
+

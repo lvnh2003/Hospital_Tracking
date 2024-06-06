@@ -1,6 +1,6 @@
 import sys
 from PyQt5.QtGui import QImage, QPixmap
-from PyQt5.QtWidgets import QMainWindow, QLabel
+from PyQt5.QtWidgets import QMainWindow, QLabel, QDialog
 from PyQt5 import uic
 from PyQt5.QtCore import QEvent, QThread, pyqtSignal, pyqtSlot, QTimer, Qt
 import cv2
@@ -8,8 +8,10 @@ import numpy as np
 
 from AddCamera import AddCamera
 from EditCamera import EditCamera
+from NotifyMessage import NotifyMessage
 from ThreadClass import ThreadClass
 from FunctionQueryTXTFile import Function_TXT
+from DeleteConfirm import DeleteConfirmationDialog
 
 func_txt = Function_TXT()
 
@@ -52,6 +54,9 @@ class MenuWindow(QMainWindow):
         self.ThreadActiveCamera.ImageUpdate.connect(self.opencv_emit)
         self.ThreadActiveCamera.start()
         self.initUI()
+        self.editBtn.clicked.connect(self.editCamera)
+        self.addBtn.clicked.connect(lambda: AddCamera(self))
+        self.deleteBtn.clicked.connect(self.showDeleteConfirmation)
         self.show()
 
     def initUI(self):
@@ -69,9 +74,10 @@ class MenuWindow(QMainWindow):
             self.camera_labels.append(label)
             setattr(self, f"camera_{i + 1}", label)
             self.verticalLayout.addWidget(label)
-        self.camera_1.setStyleSheet("background-color: white;color: black;padding-left:20; border-radius: 8")
-        self.editBtn.clicked.connect(self.editCamera)
-        self.addBtn.clicked.connect(lambda : AddCamera(self))
+        if self.camera_labels:
+            self.camera_1.setStyleSheet("background-color: white;color: black;padding-left:20; border-radius: 8")
+
+
 
     def clear_layout(self, layout):
         while layout.count():
@@ -98,11 +104,20 @@ class MenuWindow(QMainWindow):
     def editCamera(self):
         EditCamera(self)
         self.ThreadActiveCamera.stop()
+
     def updateCameraList(self):
         self.cameras = func_txt.getCameras()
         self.initUI()
         self.parent.updateCameraList()
+
+    def showDeleteConfirmation(self):
+        dialog = DeleteConfirmationDialog()
+        if dialog.exec_() == QDialog.Accepted:
+            func_txt.deleteCamera(self.camera_active)
+            NotifyMessage("Delete camera successfully")
+            self.updateCameraList()
+
     def closeEvent(self, event):
-         if self.ThreadActiveCamera  is not None:
-             self.ThreadActiveCamera.stop()
-         event.accept()
+        if self.ThreadActiveCamera is not None:
+            self.ThreadActiveCamera.stop()
+        event.accept()

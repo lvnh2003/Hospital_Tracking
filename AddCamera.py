@@ -36,6 +36,7 @@ class AddCamera(QtWidgets.QMainWindow):
     def checkCameraIsAvailable(self):
         self.link = self.ipAddress.toPlainText()
         if len(self.link) > 255:
+            NotifyMessage("Camera IP Address too long")
             print("Camera IP Address of character is too long")
             return
         # change value video_capture
@@ -64,6 +65,7 @@ class AddCamera(QtWidgets.QMainWindow):
         # thêm link mới vào file cameras.txt
         self.link = self.ipAddress.toPlainText()
         if len(self.link) > 255:
+            NotifyMessage("Camera IP Address too long", 0)
             print("Camera IP Address of character is too long")
             return
         NotifyMessage("Add new camera successfully")
