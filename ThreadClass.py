@@ -1,3 +1,5 @@
+import datetime
+
 import cv2
 from PyQt5.QtCore import QThread, pyqtSignal, pyqtSlot
 import numpy as np
@@ -8,6 +10,7 @@ from NotifyMessage import NotifyMessage
 
 fall_detect = FallDetect(conf=0.7)
 func_txt = Function_TXT()
+from SendPush import sendMessage, uploadImageToImgur
 
 
 # class thread để gửi frame cho label
@@ -20,6 +23,8 @@ class ThreadClassDetect(QThread):
         self.ThreadActive = False
         self.fall_detect = fall_detect
         self.cameras = func_txt.getCameras()
+        self.last_alert = None
+        self.alert_telegram_each = 15  # seconds
 
     def run(self):
         self.cameras = func_txt.getCameras()
@@ -38,6 +43,15 @@ class ThreadClassDetect(QThread):
                 # phát hiện có người ngã
                 if results:
                     cv2.putText(frame_cap, "Fall detect!!!!", (10, 50), cv2.FONT_HERSHEY_SIMPLEX, 2, (0, 0, 255), 2)
+                    # gửi thông báo sau mỗi 15s, tránh spam
+                    if (self.last_alert is None) or (
+                            (datetime.datetime.utcnow() - self.last_alert).total_seconds() > self.alert_telegram_each):
+                        self.last_alert = datetime.datetime.utcnow()
+                        cv2.imwrite("img.jpg", frame_cap)
+                        # upload ảnh lên imgur
+                        url = uploadImageToImgur("./img.jpg")
+                        sendMessage(self.camera_index+1, url)
+
                 annotated_frame = results.plot() if results else frame_cap
                 self.ImageUpdate.emit(annotated_frame)
         Capture.release()
@@ -77,8 +91,7 @@ class ThreadClass(QThread):
     @pyqtSlot(str)
     def notify_error(self, message):
         NotifyMessage(message, 0)
+
     def stop(self):
         self.ThreadActive = False
         self.quit()
-
-
