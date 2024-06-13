@@ -6,10 +6,10 @@ from PyQt5.QtCore import QEvent, pyqtSlot, QTimer, QDateTime
 import cv2
 import numpy as np
 
-from AddCamera import AddCamera
+from Camera.AddCamera import AddCamera
 from ThreadClass import ThreadClassDetect
-from MenuWindow import MenuWindow
-from FunctionQueryTXTFile import Function_TXT
+from Camera.MenuWindow import MenuWindow
+from Controller.FunctionQueryTXTFile import Function_TXT
 
 func_txt = Function_TXT()
 
@@ -17,7 +17,7 @@ func_txt = Function_TXT()
 class HomeWindow(QMainWindow):
     def __init__(self, parent=None):
         super().__init__(parent)
-        uic.loadUi("mainwindow.ui", self)
+        uic.loadUi("./UI/mainwindow.ui", self)
         self.cameras = func_txt.getCameras()
         # Sự kiện click + ẩn button
         self.initUI()

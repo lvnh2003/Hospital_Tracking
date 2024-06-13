@@ -1,17 +1,16 @@
-import sys
 from PyQt5.QtGui import QImage, QPixmap
 from PyQt5.QtWidgets import QMainWindow, QLabel, QDialog
 from PyQt5 import uic
-from PyQt5.QtCore import QEvent, QThread, pyqtSignal, pyqtSlot, QTimer, Qt
+from PyQt5.QtCore import pyqtSlot, Qt
 import cv2
 import numpy as np
 
-from AddCamera import AddCamera
-from EditCamera import EditCamera
-from NotifyMessage import NotifyMessage
+from Camera.AddCamera import AddCamera
+from Camera.EditCamera import EditCamera
+from Components.NotifyMessage import NotifyMessage
 from ThreadClass import ThreadClass
-from FunctionQueryTXTFile import Function_TXT
-from DeleteConfirm import DeleteConfirmationDialog
+from Controller.FunctionQueryTXTFile import Function_TXT
+from Camera.DeleteConfirm import DeleteConfirmationDialog
 
 func_txt = Function_TXT()
 
@@ -47,7 +46,7 @@ class MenuWindow(QMainWindow):
         super().__init__(parent)
         self.parent = parent
         self.camera_labels = None
-        uic.loadUi("menuwindow.ui", self)
+        uic.loadUi("./UI/menuwindow.ui", self)
         self.cameras = func_txt.getCameras()
         self.camera_active = 0
         self.ThreadActiveCamera = ThreadClass(camera=self.cameras[0])

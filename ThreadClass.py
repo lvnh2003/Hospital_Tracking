@@ -3,14 +3,15 @@ import datetime
 import cv2
 from PyQt5.QtCore import QThread, pyqtSignal, pyqtSlot
 import numpy as np
-
-from DetectFallingModel import FallDetect
-from FunctionQueryTXTFile import Function_TXT
-from NotifyMessage import NotifyMessage
+from playsound import playsound
+import threading
+from Model.DetectFallingModel import FallDetect
+from Controller.FunctionQueryTXTFile import Function_TXT
+from Components.NotifyMessage import NotifyMessage
 
 fall_detect = FallDetect(conf=0.7)
 func_txt = Function_TXT()
-from SendPush import sendMessage, uploadImageToImgur
+from Controller.SendPush import sendMessage, uploadImageToImgur
 
 
 # class thread để gửi frame cho label
@@ -42,12 +43,19 @@ class ThreadClassDetect(QThread):
                 results = self.fall_detect.detect(frame_cap)
                 # phát hiện có người ngã
                 if results:
+                    sound_thread = threading.Thread(target=self.playWarningSound)
+                    sound_thread.start()
+                    self.playWarningSound()
+                    print(1)
                     cv2.putText(frame_cap, "Fall detect!!!!", (10, 50), cv2.FONT_HERSHEY_SIMPLEX, 2, (0, 0, 255), 2)
                     # gửi thông báo sau mỗi 15s, tránh spam
                     if (self.last_alert is None) or (
                             (datetime.datetime.utcnow() - self.last_alert).total_seconds() > self.alert_telegram_each):
                         self.last_alert = datetime.datetime.utcnow()
-                        cv2.imwrite("img.jpg", frame_cap)
+
+
+                       # cv2.imwrite("img.jpg", frame_cap)
+                        results.save('./img.jpg')
                         # upload ảnh lên imgur
                         url = uploadImageToImgur("./img.jpg")
                         sendMessage(self.camera_index+1, url)
@@ -60,6 +68,8 @@ class ThreadClassDetect(QThread):
         self.ThreadActive = False
         self.quit()
 
+    def playWarningSound(self):
+         playsound('./resources/warning.wav')
 
 class ThreadClass(QThread):
     ImageUpdate = pyqtSignal(np.ndarray)
