@@ -12,7 +12,7 @@ from Components.NotifyMessage import NotifyMessage
 fall_detect = FallDetect(conf=0.7)
 func_txt = Function_TXT()
 from Controller.SendPush import sendMessage, uploadImageToImgur
-
+from concurrent.futures import ThreadPoolExecutor
 
 # class thread để gửi frame cho label
 class ThreadClassDetect(QThread):
@@ -37,31 +37,27 @@ class ThreadClassDetect(QThread):
         Capture.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
         Capture.set(cv2.CAP_PROP_FRAME_WIDTH, 640)
         self.ThreadActive = True
-        while self.ThreadActive:
-            ret, frame_cap = Capture.read()
-            if ret:
-                results = self.fall_detect.detect(frame_cap)
-                # phát hiện có người ngã
-                if results:
-                    sound_thread = threading.Thread(target=self.playWarningSound)
-                    sound_thread.start()
-                    self.playWarningSound()
-                    print(1)
-                    cv2.putText(frame_cap, "Fall detect!!!!", (10, 50), cv2.FONT_HERSHEY_SIMPLEX, 2, (0, 0, 255), 2)
-                    # gửi thông báo sau mỗi 15s, tránh spam
-                    if (self.last_alert is None) or (
-                            (datetime.datetime.utcnow() - self.last_alert).total_seconds() > self.alert_telegram_each):
-                        self.last_alert = datetime.datetime.utcnow()
+        with ThreadPoolExecutor(max_workers=2) as executor:
+            while self.ThreadActive:
+                ret, frame_cap = Capture.read()
+                if ret:
+                    results = self.fall_detect.detect(frame_cap)
+                    # phát hiện có người ngã
+                    if results:
+                        sound_thread = threading.Thread(target=self.playWarningSound)
+                        sound_thread.start()
+                        cv2.putText(frame_cap, "Fall detect!!!!", (10, 50), cv2.FONT_HERSHEY_SIMPLEX, 2, (0, 0, 255), 2)
+                        # gửi thông báo sau mỗi 15s, tránh spam
+                        if (self.last_alert is None) or (
+                                (datetime.datetime.utcnow() - self.last_alert).total_seconds() > self.alert_telegram_each):
+                            self.last_alert = datetime.datetime.utcnow()
+                           # cv2.imwrite("img.jpg", frame_cap)
+                            results.save('./img.jpg')
+                            # thực hiện việc đăng hình ảnh và gửi thông báo
+                            executor.submit(self.handle_alert, "./img.jpg", self.camera_index + 1)
 
-
-                       # cv2.imwrite("img.jpg", frame_cap)
-                        results.save('./img.jpg')
-                        # upload ảnh lên imgur
-                        url = uploadImageToImgur("./img.jpg")
-                        sendMessage(self.camera_index+1, url)
-
-                annotated_frame = results.plot() if results else frame_cap
-                self.ImageUpdate.emit(annotated_frame)
+                    annotated_frame = results.plot() if results else frame_cap
+                    self.ImageUpdate.emit(annotated_frame)
         Capture.release()
 
     def stop(self):
@@ -70,6 +66,15 @@ class ThreadClassDetect(QThread):
 
     def playWarningSound(self):
          playsound('./resources/warning.wav')
+
+    def handle_alert(self, image_path, camera_index):
+        try:
+            # Upload ảnh lên Imgur
+            url = uploadImageToImgur(image_path)
+            # Send a notification
+            sendMessage(camera_index, url)
+        except Exception as e:
+            print(f"An error occurred while handling alert: {e}")
 
 class ThreadClass(QThread):
     ImageUpdate = pyqtSignal(np.ndarray)

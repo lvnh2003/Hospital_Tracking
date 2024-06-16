@@ -1,6 +1,6 @@
 class Function_TXT:
     def __init__(self):
-        self.camera_file = '../resources/cameras.txt'
+        self.camera_file = './resources/cameras.txt'
         self.cameras = self.getCameras()
     def getCameras(self):
         with open(self.camera_file , 'r') as file:
@@ -17,7 +17,7 @@ class Function_TXT:
         else:
             print("Error: Index out of range")
     def addCamera(self, link):
-        with open('../resources/cameras.txt', 'a') as file:
+        with open('./resources/cameras.txt', 'a') as file:
             file.write(link + "\n")
 
     def deleteCamera(self, index):

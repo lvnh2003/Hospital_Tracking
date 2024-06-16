@@ -10,7 +10,7 @@ class EditCamera(QtWidgets.QMainWindow):
     def __init__(self, parent = None):
         super(EditCamera, self).__init__(parent)
         # load ui from ui folder
-        uic.loadUi("camera_setting.ui", self)
+        uic.loadUi("./UI/camera_setting.ui", self)
         self.setWindowTitle("Edit Camera")
         self.ipAddress.setStyleSheet("background-color:white;color: black")
         self.setStyleSheet("background-color: #DDDDDD;color: black")

@@ -17,9 +17,9 @@ class NotifyMessage(QDialog):
 
         # Example: Add an icon to the center of the dialog
         icon_label = QLabel(self)
-        pixmap = QPixmap('../resources/success.png')
+        pixmap = QPixmap('./resources/success.png')
         if self.signal == 0:
-            pixmap = QPixmap('../resources/warning.png')  # Replace with the actual path to your icon
+            pixmap = QPixmap('./resources/warning.png')  # Replace with the actual path to your icon
         pixmap = pixmap.scaledToWidth(50)  # Adjust the width as needed
         icon_label.setPixmap(pixmap)
         icon_label.setAlignment(Qt.AlignCenter)

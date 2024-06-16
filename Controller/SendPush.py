@@ -5,8 +5,8 @@ from firebase_admin import credentials, messaging
 # Khởi tạo Firebase Admin SDK, tải file serviceAccountKey.json từ firebase
 cred = credentials.Certificate("./serviceAccountKey.json")
 firebase_admin.initialize_app(cred)
-# Registration token, device token lấy trong phần Logcat khi chạy ứng dụng ( Android Studio )
-registration_token = 'YOUR_REGISTRACTION_TOKEN'
+# Registration token
+registration_token = 'YOUR_REGISTRATION_ID'
 
 def uploadImageToImgur(image_path):
     """
@@ -41,6 +41,5 @@ def sendMessage(content, image_url):
             ),
             token=registration_token
         )
-
-    # Gửi thông báo
-    messaging.send(message)
+        # Gửi thông báo
+        messaging.send(message)

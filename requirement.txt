@@ -1,0 +1,7 @@
+opencv-python
+PyQt5
+playsound
+ultralytics
+torch
+requests
+firebase_admin

@@ -13,7 +13,7 @@ class AddCamera(QtWidgets.QMainWindow):
     def __init__(self, parent=None):
         super(AddCamera, self).__init__(parent)
         # load ui from ui folder
-        uic.loadUi("camera_setting.ui", self)
+        uic.loadUi("./UI/camera_setting.ui", self)
         self.setWindowTitle("Add Camera")
         self.ipAddress.setStyleSheet("background-color:white;color: black")
         self.setStyleSheet("background-color: #DDDDDD;color: black")

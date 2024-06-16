@@ -8,7 +8,7 @@ class FallDetect():
     def __init__(self, conf):
         self.conf = conf
         # base on model trained
-        self.model = YOLO('../resources/best.pt').float().to(device)
+        self.model = YOLO('./resources/best.pt').float().to(device)
 
     def detect(self, frame):
         results = self.model(frame, conf=self.conf, verbose=False)
