@@ -6,7 +6,9 @@ from firebase_admin import credentials, messaging
 cred = credentials.Certificate("./serviceAccountKey.json")
 firebase_admin.initialize_app(cred)
 # Registration token
-registration_token = 'YOUR_REGISTRATION_ID'
+registration_tokens = [
+    'YOUR_REGISTRATION_ID'
+]
 
 def uploadImageToImgur(image_path):
     """
@@ -33,13 +35,14 @@ def uploadImageToImgur(image_path):
 
 def sendMessage(content, image_url):
     if image_url:
-        message = messaging.Message(
+        message = messaging.MulticastMessage(
             notification=messaging.Notification(
                 title="Detect Falling",
                 body=f"Detect person is falling in room {content}",
                 image=image_url
             ),
-            token=registration_token
+            tokens=registration_tokens
         )
+
         # Gửi thông báo
-        messaging.send(message)
+        messaging.send_multicast(message)
